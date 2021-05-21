@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 
 root = Tk()
 root.title("Ticket Sales")
@@ -46,7 +47,7 @@ class clsTicketSales:
         # Entries
         self.myentry = Entry(self.frame1)
         self.myentry.place(x=200, y=100)
-        self.mychoice = ttk.Combobox(self.frame1, values=self.tickets)
+        self.mychoice = ttk.Combobox(self.frame1, values=self.tickets, state="readonly")
         self.mychoice.place(x=200, y=150)
         self.mytickets = Entry(self.frame1)
         self.mytickets.place(x=250, y=200)
@@ -58,39 +59,46 @@ class clsTicketSales:
         self.btn_clear.place(x=200, y=300)
 
     def calc_payment(self):
-        if self.mychoice.get() == "Soccer":
-            vat = self.moviepr % 14
-            result1 = int(self.mytickets.get()) * self.moviepr + vat
-            result2 = self.mytickets.get()
-            result3 = self.mychoice.get()
-            result4 = self.myentry.get()
-            self.myresult.set("Amount Payable: " + str(result1))
-            self.line1.set("Reservation for " + str(result3) + " for " + str(result2))
-            self.line2.set("was done by " + str(result4))
-        elif self.mychoice.get() == "Movie":
-            vat = self.soccerpr % 14
-            result1 = int(self.mytickets.get()) * self.soccerpr + vat
-            result2 = self.mytickets.get()
-            result3 = self.mychoice.get()
-            result4 = self.myentry.get()
-            self.myresult.set("Amount Payable: " + str(result1))
-            self.line1.set("Reservation for " + str(result3) + " for " + str(result2))
-            self.line2.set("was done by " + str(result4))
-        elif self.mychoice.get() == "Theater":
-            vat = self.theaterpr % 14
-            result1 = int(self.mytickets.get()) * self.theaterpr + vat
-            result2 = self.mytickets.get()
-            result3 = self.mychoice.get()
-            result4 = self.myentry.get()
-            self.myresult.set("Amount Payable: " + str(result1))
-            self.line1.set("Reservation for " + str(result3) + " for " + str(result2))
-            self.line2.set("was done by " + str(result4))
+        try:
+            if self.mychoice.get() == "Soccer":
+                vat = self.moviepr % 14
+                result1 = int(self.mytickets.get()) * self.moviepr + vat
+                result2 = self.mytickets.get()
+                result3 = self.mychoice.get()
+                result4 = int(self.myentry.get())
+                self.myresult.set("Amount Payable: " + str(result1))
+                self.line1.set("Reservation for " + str(result3) + " for " + str(result2))
+                self.line2.set("was done by " + str(result4))
+            elif self.mychoice.get() == "Movie":
+                vat = self.soccerpr % 14
+                result1 = int(self.mytickets.get()) * self.soccerpr + vat
+                result2 = self.mytickets.get()
+                result3 = self.mychoice.get()
+                result4 = int(self.myentry.get())
+                self.myresult.set("Amount Payable: " + str(result1))
+                self.line1.set("Reservation for " + str(result3) + " for " + str(result2))
+                self.line2.set("was done by " + str(result4))
+            elif self.mychoice.get() == "Theater":
+                vat = self.theaterpr % 14
+                result1 = int(self.mytickets.get()) * self.theaterpr + vat
+                result2 = self.mytickets.get()
+                result3 = self.mychoice.get()
+                result4 = int(self.myentry.get())
+                self.myresult.set("Amount Payable: " + str(result1))
+                self.line1.set("Reservation for " + str(result3) + " for " + str(result2))
+                self.line2.set("was done by " + str(result4))
+        except ValueError:
+            if self.mytickets.get() != int:
+                self.myresult.set(messagebox.showerror(title="Error", message="Not appropriate value"))
+            elif self.myentry.get() != int:
+                self.myresult.set(messagebox.showerror(title="Error", message="Not appropriate value"))
+            elif self.mytickets.get() < 0:
+                self.myresult.set(messagebox.showerror(title="Error", message="Not appropriate value"))
 
     def clear_btn(self):
         self.myentry.delete(0, END)
         self.mytickets.delete(0, END)
         self.mychoice.set("Select")
-
 
 
 x = clsTicketSales(root)
